@@ -9,6 +9,6 @@ plugins {
 }
 
 rootProject.name = "ADP_Github"
-include("hidemodule")
+include("hiddenmodule")
 include("app")
 include("optional")

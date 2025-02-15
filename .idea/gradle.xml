@@ -9,7 +9,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/hidemodule" />
+            <option value="$PROJECT_DIR$/hiddenmodule" />
             <option value="$PROJECT_DIR$/optional" />
           </set>
         </option>

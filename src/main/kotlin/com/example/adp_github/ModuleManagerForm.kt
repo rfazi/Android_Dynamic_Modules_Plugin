@@ -32,7 +32,7 @@ class ModuleManagerForm(private val project: Project) {
         "app"
     )
     private val hiddenModules = listOf(
-        "hidemodule"
+        "hiddenmodule"
     )
 
     init {
