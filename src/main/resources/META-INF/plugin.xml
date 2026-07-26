@@ -1,34 +1,28 @@
-<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
-    <id>com.example.ADP_Github</id>
+    <id>io.github.rfazi.androiddynamicmodules</id>
+    <name>Android Dynamic Modules</name>
+    <vendor url="https://github.com/rfazi">Ruben Fazi</vendor>
 
-    <!-- Public plugin name should be written in Title Case.
-         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
-    <name>ADP_Github</name>
-
-    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor email="support@yourcompany.com" url="https://www.yourcompany.com">YourCompany</vendor>
-
-    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
-         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
-         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    This plugin allow you to choose which module enable or disable.
-  ]]></description>
+      <p>
+        Enable or disable Gradle modules from the IDE and keep Android dynamic feature declarations
+        aligned with the selected modules.
+      </p>
+      <p>
+        The plugin supports Gradle Groovy and Kotlin DSL projects, validates all edits before writing,
+        applies changes as one IDE command, and starts a Gradle sync only when files changed.
+      </p>
+    ]]></description>
 
-    <!-- Product and plugin compatibility requirements.
-         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.plugins.gradle</depends>
 
-    <!-- Extension points defined by the plugin.
-         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
-    <extensions defaultExtensionNs="com.intellij">
-
-    </extensions>
     <actions>
-        <action id="com.example.adp_github.TestAction" class="com.example.adp_github.TestAction"
-                text="Manage App Modules" description="Manage App Modules">
+        <action
+                id="io.github.rfazi.androiddynamicmodules.ManageModulesAction"
+                class="io.github.rfazi.androiddynamicmodules.ManageModulesAction"
+                text="Manage Android Modules"
+                description="Enable or disable Android and Gradle modules">
             <add-to-group group-id="ToolsMenu" anchor="first"/>
         </action>
     </actions>
