@@ -1,52 +1,58 @@
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+import org.jetbrains.intellij.platform.gradle.tasks.VerifyPluginTask
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    id("java")
-    id("org.jetbrains.kotlin.jvm") version "1.9.25"
-    id("org.jetbrains.intellij") version "1.17.4"
+    id("org.jetbrains.kotlin.jvm")
+    id("org.jetbrains.intellij.platform")
 }
 
-group = "com.example"
-version = "1.0-SNAPSHOT"
+group = providers.gradleProperty("pluginGroup").get()
+version = providers.gradleProperty("pluginVersion").get()
 
-repositories {
-    mavenCentral()
+dependencies {
+    testImplementation(kotlin("test-junit"))
+
+    intellijPlatform {
+        create(IntelliJPlatformType.IntellijIdeaCommunity, "2024.2.6") {
+            useInstaller = false
+        }
+        bundledPlugin("org.jetbrains.plugins.gradle")
+    }
 }
 
-// Configure Gradle IntelliJ Plugin
-// Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-intellij {
-    // FOR DEBUG
-    //version.set("2024.2.2") //2024.2.2 Patch 1
-    //type.set("AI") // android studio
+kotlin {
+    jvmToolchain(21)
+    compilerOptions.jvmTarget.set(JvmTarget.JVM_21)
+}
 
-    // FOR BUILD
-    version.set("2024.1.7")
-    type.set("IC") // Target IDE Platform
+intellijPlatform {
+    buildSearchableOptions = false
 
-    plugins.set(listOf(/* Plugin Dependencies */))
+    pluginConfiguration {
+        ideaVersion {
+            sinceBuild = "242"
+            untilBuild = provider { null }
+        }
+    }
+
+    pluginVerification {
+        ides {
+            current()
+        }
+    }
 }
 
 tasks {
-    // Set the JVM compatibility versions
-    withType<JavaCompile> {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
-    }
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
+    withType<JavaCompile>().configureEach {
+        sourceCompatibility = "21"
+        targetCompatibility = "21"
     }
 
-    patchPluginXml {
-        sinceBuild.set("221") //Electric Eel compatibility
-        untilBuild.set("243.*")
-    }
-
-    signPlugin {
-        certificateChain.set(System.getenv("CERTIFICATE_CHAIN"))
-        privateKey.set(System.getenv("PRIVATE_KEY"))
-        password.set(System.getenv("PRIVATE_KEY_PASSWORD"))
-    }
-
-    publishPlugin {
-        token.set(System.getenv("PUBLISH_TOKEN"))
+    withType<VerifyPluginTask>().configureEach {
+        systemProperty(
+            "plugin.verifier.home.dir",
+            layout.buildDirectory.dir("pluginVerifier-home").get().asFile.absolutePath,
+        )
     }
 }
